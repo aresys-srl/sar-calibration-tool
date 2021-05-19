@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sar_calibration_tool_configuration version="1.0">
+        <calibration_site_analysis>
+                <processing_steps>
+                        <apply_plate_tectonics_correction>True</apply_plate_tectonics_correction>
+                        <apply_set_correction>True</apply_set_correction>
+                        <apply_range_corrections>True</apply_range_corrections>
+                        <apply_azimuth_corrections>True</apply_azimuth_corrections>
+                        <apply_ionospheric_delay_correction>True</apply_ionospheric_delay_correction>
+                        <apply_tropospheric_delay_correction>True</apply_tropospheric_delay_correction>
+                </processing_steps>
+                <irf_analysis>
+                        <maximum_ale>None</maximum_ale>
+                </irf_analysis>
+                <ionospheric_delay_analysis>
+                        <ionosphere_maps_dir>./data/auxiliary_files/ionosphere_maps</ionosphere_maps_dir>
+                        <ionosphere_analysis_center>cod</ionosphere_analysis_center>
+                        <ionospheric_delay_scaling_factor>0.9</ionospheric_delay_scaling_factor>
+                </ionospheric_delay_analysis>
+                <tropospheric_delay_analysis>
+                        <troposphere_maps_dir>./data/auxiliary_files/troposphere_maps</troposphere_maps_dir>
+                        <troposphere_maps_model>GRID</troposphere_maps_model>
+                        <troposphere_maps_resolution>1x1</troposphere_maps_resolution>
+                        <troposphere_maps_version>OP</troposphere_maps_version>
+                </tropospheric_delay_analysis>
+        </calibration_site_analysis>
+</sar_calibration_tool_configuration>

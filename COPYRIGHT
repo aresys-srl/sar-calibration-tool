@@ -1,0 +1,7 @@
+This code is released under MIT license, it is experimental and may change without notice.
+
+Libraries directly included in SAR Calibration Tool (SCT):
+
+arepytools
+sct
+  copyright: ARESYS S.r.l. <info@aresys.it>

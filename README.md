@@ -1,2 +1,0 @@
-# SAR Calibration Tool
-

@@ -1,0 +1,6 @@
+# Ignore the following files or directories
+__pycache__
+*.egg-info
+docs/_build
+docs/notebooks/.ipynb_checkpoints
+reference
