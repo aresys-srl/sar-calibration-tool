@@ -202,7 +202,7 @@ def _inverse_geocoding_monostatic_init(gso, point: np.ndarray, frequency_doppler
         if abs(doppler_centroid_equation[0]) < abs(doppler_centroid_equation[-1]):
             interval_index.append(0)
         else:
-            interval_index.append(gso.interpolator.num_polynomials - 1)
+            interval_index.append(gso.interpolator.num_of_polynomials - 1)
     return interval_index
 
 

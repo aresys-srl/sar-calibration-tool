@@ -13,8 +13,7 @@ import os
 import re
 from scipy.interpolate import RegularGridInterpolator
 
-import arepytools.constants as cst
-from arepytools.geometry.conversions import xyz2llh, llh2xyz
+from arepytools.geometry.conversions import xyz2llh
 
 from sct.support.geometry_extended import find_ellipsoid_intersection
 from sct.support.utils import compute_angle_between_vectors
@@ -102,7 +101,11 @@ class IonosphericDelayAnalyser:
                 # return ionosphere_map_file
                 raise NotImplementedError  # TODO
 
-        raise FileNotFoundError("No ionosphere map found for the {} date.".format(acquisition_time))
+        raise FileNotFoundError(
+            "No ionosphere map found for the {} date. File {} not found.".format(
+                acquisition_time, os.path.basename(ionosphere_map_file)
+            )
+        )
 
     def __parse_tec_map(self, tec_map, exponent=-1):
         """Parse ionosphere map content
@@ -210,7 +213,7 @@ class IonosphericDelayAnalyser:
             + acquisition_time.minute_of_hour / 60.0
             + acquisition_time.second_of_minute / 3600
         )
-        ind = list(filter(lambda i: i < acquisition_hour, tec_map_hour_list))[-1]
+        ind = np.argmin(np.abs(tec_map_hour_list - acquisition_hour))
         hour1 = tec_map_hour_list[ind]
         hour2 = tec_map_hour_list[ind + 1]
         data1 = tec_map_data_list[ind, :, :]

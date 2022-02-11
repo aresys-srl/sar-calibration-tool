@@ -12,7 +12,7 @@ import numpy as np
 import os
 from scipy.interpolate import interp1d, griddata
 
-from arepytools.geometry.conversions import xyz2llh, llh2xyz
+from arepytools.geometry.conversions import xyz2llh
 from arepytools.timing.precisedatetime import PreciseDateTime
 
 from sct.support.utils import compute_incidence_angle
@@ -79,7 +79,10 @@ class TroposphericDelayAnalyser:
                 if os.path.isfile(troposphere_map_file):
                     return troposphere_map_file
 
-        raise FileNotFoundError("No troposphere map found for the {} date.".format(acquisition_time))
+        raise FileNotFoundError(
+            "No troposphere map found for the {} date. File {} not found.".format(acquisition_time,
+            os.path.basename(troposphere_map_file)),
+        )
 
     def __read_troposphere_map_file(self, troposphere_map_file):
         """Read troposphere map file

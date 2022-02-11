@@ -96,25 +96,29 @@ class Sentinel1Product(SARProduct):
         # - Measurement files
         for f in measurement_files:
             measurement_file = os.path.basename(f)
-            self.__measurement_files[int(measurement_file[61:64]) - 1] = f
+            idx = int(measurement_file[61:64]) - 1
+            self.__measurement_files[idx % self.__channels] = f
 
         # - Annotation files
         annotation_files = glob(os.path.join(self.sar_product_dir, "annotation", "*.xml"))
         for f in annotation_files:
             annotation_file = os.path.basename(f)
-            self.__annotation_files[int(annotation_file[61:64]) - 1] = f
+            idx = int(annotation_file[61:64]) - 1
+            self.__annotation_files[idx % self.__channels] = f
 
         # - Calibration files
         calibration_files = glob(os.path.join(self.sar_product_dir, "annotation", "calibration", "calibration-*.xml"))
         for f in calibration_files:
             calibration_file = os.path.basename(f)
-            self.__calibration_files[int(calibration_file[73:76]) - 1] = f
+            idx = int(calibration_file[73:76]) - 1
+            self.__calibration_files[idx % self.__channels] = f
 
         # - Noise files
         noise_files = glob(os.path.join(self.sar_product_dir, "annotation", "calibration", "noise-*.xml"))
         for f in noise_files:
             noise_file = os.path.basename(f)
-            self.__noise_files[int(noise_file[67:70]) - 1] = f
+            idx = int(noise_file[67:70]) - 1
+            self.__noise_files[idx % self.__channels] = f
 
         # - Manifest file
         self.__manifest_file = os.path.join(self.sar_product_dir, "manifest.safe")
@@ -376,8 +380,17 @@ class Sentinel1Product(SARProduct):
             if channel == 0:
                 if self.__use_external_orbit == True:
                     orbit = EEOrbit(self.orbit_file)
+                    sv_count = orbit.position_sv.shape[0]
+                    orbit_time_axis = np.arange(sv_count) * orbit.delta_time + orbit.start_time
+                    start_idx = np.argmin(np.abs(orbit_time_axis - self.start_time)) - 10
+                    stop_idx = np.argmin(np.abs(orbit_time_axis - self.stop_time)) + 10
+                    if (start_idx < 0) or (stop_idx > sv_count - 1):
+                        raise RuntimeError("Input orbit not covering input SAR product extension.")
                     metadata_sv = metadata.StateVectors(
-                        orbit.position_sv, orbit.velocity_sv, orbit.reference_time, orbit.delta_time
+                        orbit.position_sv[start_idx:stop_idx, :],
+                        orbit.velocity_sv[start_idx:stop_idx, :],
+                        orbit_time_axis[start_idx],
+                        orbit.delta_time,
                     )
 
                     self.orbit_direction = orbit.get_orbit_direction(self.start_time)
@@ -652,7 +665,10 @@ class Sentinel1Product(SARProduct):
         doppler_rate_theoretical = self.get_doppler_rate_theoretical(pt_geo, t_az)
 
         swst_changes = self.acquisition_timeline_list[swath_index].swst_changes
-        swst_index = [t < t_az for t in swst_changes[1]].index(False) - 1
+        if t_az>=swst_changes[1][-1]:
+            swst_index = -1
+        else:
+            swst_index = [t < t_az for t in swst_changes[1]].index(False) - 1
         swst = swst_changes[2][swst_index]
 
         # Compute azimuth corrections:

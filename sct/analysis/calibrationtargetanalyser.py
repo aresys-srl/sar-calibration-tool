@@ -108,7 +108,8 @@ class CalibrationTargetAnalyser:  # TODO Improve CalibrationTargetAnalyser class
         # Select data portion where to perform IRF and RCS analyses
         log.debug("Compute number of times the target is seen by the current SAR product (swath/burst combinations)")
         if sum(sum(pt_sar__mask[:, :, 0])) == 0:
-            raise RuntimeError("Target outside image.")
+            log.debug("Target outside image.")
+            return True
         if maximum_ale is None:  # the ROI dimensions depend on the maximum ALE allowed
             roi_size_rg = 32
             roi_size_az = 32
@@ -124,7 +125,8 @@ class CalibrationTargetAnalyser:  # TODO Improve CalibrationTargetAnalyser class
         pt_roi[3] = roi_size_rg * np.mean(t_rg_step[:, 0])
         data_portion_corners_rg, data_portion_corners_az = self.sar_product.select_data_portion(pt_roi)
         if len(data_portion_corners_rg) == 0 or len(data_portion_corners_az) == 0:
-            raise RuntimeError("Target outside image.")
+            log.debug("Target outside image.")
+            return True
         data_portion_corners_rg = data_portion_corners_rg * np.tile(pt_sar__mask, (1, 1, 2))
         data_portion_corners_az = data_portion_corners_az * np.tile(pt_sar__mask, (1, 1, 2))
 

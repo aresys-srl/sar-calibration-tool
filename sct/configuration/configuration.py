@@ -8,6 +8,7 @@ import logging
 
 log = logging.getLogger(__name__)
 
+from distutils.util import strtobool
 import xml.etree.ElementTree as ET
 
 
@@ -55,16 +56,16 @@ class Configuration:
         element = calibration_site_analysis.find("processing_steps")
         processing_steps = {}
         processing_steps["apply_plate_tectonics_correction"] = bool(
-            element.find("apply_plate_tectonics_correction").text
+            strtobool(element.find("apply_plate_tectonics_correction").text)
         )
-        processing_steps["apply_set_correction"] = bool(element.find("apply_set_correction").text)
-        processing_steps["apply_range_corrections"] = bool(element.find("apply_range_corrections").text)
-        processing_steps["apply_azimuth_corrections"] = bool(element.find("apply_azimuth_corrections").text)
+        processing_steps["apply_set_correction"] = bool(strtobool(element.find("apply_set_correction").text))
+        processing_steps["apply_range_corrections"] = bool(strtobool(element.find("apply_range_corrections").text))
+        processing_steps["apply_azimuth_corrections"] = bool(strtobool(element.find("apply_azimuth_corrections").text))
         processing_steps["apply_ionospheric_delay_correction"] = bool(
-            element.find("apply_ionospheric_delay_correction").text
+            strtobool(element.find("apply_ionospheric_delay_correction").text)
         )
         processing_steps["apply_tropospheric_delay_correction"] = bool(
-            element.find("apply_tropospheric_delay_correction").text
+            strtobool(element.find("apply_tropospheric_delay_correction").text)
         )
 
         element = calibration_site_analysis.find("irf_analysis")

@@ -148,7 +148,7 @@ class SARProduct:
         if not burstwise_acquisition_flag:
             bursts_ref = 1
         else:
-            bursts_ref = self.burst_info_list[0].get_number_of_bursts()
+            bursts_ref = max([burst_info.get_number_of_bursts() for burst_info in self.burst_info_list])
 
         # Read ROI
         t_rg_0 = np.zeros((channels, bursts_ref), dtype=float)

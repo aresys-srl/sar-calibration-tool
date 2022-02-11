@@ -35,4 +35,4 @@ logger.addHandler(ch)
 # codedef_file = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'resources/sar_products_specs/sentinel1/')
 # os.putenv('CODA_DEFINITION', codedef_file)
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"

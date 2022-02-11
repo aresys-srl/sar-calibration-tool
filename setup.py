@@ -12,7 +12,7 @@ def exclude_list():
 
 setup(
     name="sct",
-    version="1.0.0",
+    version="1.0.1",
     author="ARESYS S.r.l.",
     author_email="info@aresys.it",
     description="SAR Calibration Tool",

@@ -133,11 +133,11 @@ class IRFAnalyser:  # TODO Improve IRFAnalyser class
         az_shift = target_position[1] - data_portion_half_size[1]
         data_portion__recentered = sp.shift_data(data_portion, rg_shift, az_shift)
         if abs(rg_shift) > irf_roi[0] or abs(az_shift) > irf_roi[1]:
-            irf_resolution = [0, 0]
-            irf_pslr = [0, 0, 0]
-            irf_islr = [0, 0, 0]
-            irf_sslr = [0, 0, 0]
-            irf_localization_error = [0, 0]
+            irf_resolution = np.array([0, 0])
+            irf_pslr = np.array([0, 0, 0])
+            irf_islr = np.array([0, 0, 0])
+            irf_sslr = np.array([0, 0, 0])
+            irf_localization_error = np.array([0, 0])
             return irf_resolution, irf_pslr, irf_islr, irf_sslr, irf_localization_error
         data_portion__recentered = self.__cut_central_rect(data_portion__recentered, irf_roi[0], irf_roi[1])
 
@@ -195,11 +195,11 @@ class IRFAnalyser:  # TODO Improve IRFAnalyser class
         irf_rg_resolution = self.__compute_resolution(irf_rg_profile) / irf_ovrs
         irf_az_resolution = self.__compute_resolution(irf_az_profile) / irf_ovrs
         if irf_rg_resolution <= 0 or irf_az_resolution <= 0:
-            irf_resolution = [0, 0]
-            irf_pslr = [0, 0, 0]
-            irf_islr = [0, 0, 0]
-            irf_sslr = [0, 0, 0]
-            irf_localization_error = [0, 0]
+            irf_resolution = np.array([0, 0])
+            irf_pslr = np.array([0, 0, 0])
+            irf_islr = np.array([0, 0, 0])
+            irf_sslr = np.array([0, 0, 0])
+            irf_localization_error = np.array([0, 0])
             return irf_resolution, irf_pslr, irf_islr, irf_sslr, irf_localization_error
 
         # - PSLR, ISLR and SSLR
@@ -240,14 +240,14 @@ class IRFAnalyser:  # TODO Improve IRFAnalyser class
                 step_cuts[1] = np.sqrt(step[0] ** 2 + (1 / sidelobes_directions[1] * step[1]) ** 2)
             else:
                 step_cuts[1] = np.sqrt((sidelobes_directions[1] * step[0]) ** 2 + step[1] ** 2)
-        irf_resolution = [irf_rg_resolution, irf_az_resolution] * step_cuts
-        irf_pslr = [irf_rg_pslr, irf_az_pslr, irf_2d_pslr]
-        irf_islr = [irf_rg_islr, irf_az_islr, irf_2d_islr]
-        irf_sslr = [irf_rg_sslr, irf_az_sslr, irf_2d_sslr]
+        irf_resolution = np.array([irf_rg_resolution, irf_az_resolution]) * step_cuts
+        irf_pslr = np.array([irf_rg_pslr, irf_az_pslr, irf_2d_pslr])
+        irf_islr = np.array([irf_rg_islr, irf_az_islr, irf_2d_islr])
+        irf_sslr = np.array([irf_rg_sslr, irf_az_sslr, irf_2d_sslr])
         if target_position__ref != []:
-            irf_localization_error = [irf_rg_localization_error, irf_az_localization_error] * step
+            irf_localization_error = np.array([irf_rg_localization_error, irf_az_localization_error]) * step
         else:
-            irf_localization_error = []
+            irf_localization_error = np.array([])
 
         return irf_resolution, irf_pslr, irf_islr, irf_sslr, irf_localization_error
 
@@ -330,27 +330,27 @@ class IRFAnalyser:  # TODO Improve IRFAnalyser class
         m_rg = int(np.ceil(m * rg_res / rg_pixel))
         pos_rg_1 = [
             10,
-            max(roi_size[0] - 11 - m_rg, roi_size[0] / 2 + 9),
+            int(max(roi_size[0] - 11 - m_rg, roi_size[0] / 2 + 9)),
             10,
-            max(roi_size[0] - 11 - m_rg, roi_size[0] / 2 + 9),
+            int(max(roi_size[0] - 11 - m_rg, roi_size[0] / 2 + 9)),
         ]
         pos_rg_2 = [
-            min(pos_rg_1[0] + m_rg, roi_size[0] / 2 - 10),
-            min(pos_rg_1[1] + m_rg, roi_size[0] - 10),
-            min(pos_rg_1[2] + m_rg, roi_size[0] / 2 - 10),
-            min(pos_rg_1[3] + m_rg, roi_size[0] - 10),
+            int(min(pos_rg_1[0] + m_rg, roi_size[0] / 2 - 10)),
+            int(min(pos_rg_1[1] + m_rg, roi_size[0] - 10)),
+            int(min(pos_rg_1[2] + m_rg, roi_size[0] / 2 - 10)),
+            int(min(pos_rg_1[3] + m_rg, roi_size[0] - 10)),
         ]
         pos_az_1 = [
             10,
             10,
-            max(roi_size[1] - 11 - m_az, roi_size[1] / 2 + 9),
-            max(roi_size[1] - 11 - m_az, roi_size[1] / 2 + 9),
+            int(max(roi_size[1] - 11 - m_az, roi_size[1] / 2 + 9)),
+            int(max(roi_size[1] - 11 - m_az, roi_size[1] / 2 + 9)),
         ]
         pos_az_2 = [
-            min(pos_az_1[0] + m_az, roi_size[1] / 2 - 10),
-            min(pos_az_1[1] + m_az, roi_size[1] / 2 - 10),
-            min(pos_az_1[2] + m_az, roi_size[1] - 10),
-            min(pos_az_1[3] + m_az, roi_size[1] - 10),
+            int(min(pos_az_1[0] + m_az, roi_size[1] / 2 - 10)),
+            int(min(pos_az_1[1] + m_az, roi_size[1] / 2 - 10)),
+            int(min(pos_az_1[2] + m_az, roi_size[1] - 10)),
+            int(min(pos_az_1[3] + m_az, roi_size[1] - 10)),
         ]
 
         i_bkgrd = (
