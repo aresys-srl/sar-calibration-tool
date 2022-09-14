@@ -1,10 +1,8 @@
 name: sct_env
 channels:
-  - defaults
   - conda-forge
-  - stcorp
 dependencies:
-  - python>=3.5
+  - python==3.7
   - rasterio
   - coda
   - pandas
