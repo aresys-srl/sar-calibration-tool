@@ -110,7 +110,7 @@ def direct_geocoding_bistatic(sensor_position_rx: np.ndarray, sensor_velocity_rx
 def _direct_geocoding_monostatic_init(sat_position, sat_velocity, range_distance, look_sign):
     satellite_distance_from_center = np.linalg.norm(sat_position)  # Satellite Position Norm
     llh_sat = conv.xyz2llh(sat_position)
-    earth_radius = np.linalg.norm(conv.llh2xyz(np.asarray([llh_sat[0], llh_sat[1], 0], dtype=float)))
+    earth_radius = np.linalg.norm(conv.llh2xyz(np.asarray([llh_sat[0,0], llh_sat[1,0], 0], dtype=float)))
 
     # Check earth radius vs range compatibility
     if range_distance < satellite_distance_from_center - earth_radius:

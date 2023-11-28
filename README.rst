@@ -29,38 +29,36 @@ The packages required by SAR Calibration Tool are specified in the file ``enviro
 
 Minimum requirements:
 
-* python 3.5 or higher
-* numpy 1.17 or higher
+* python 3.8
 
 
 Install
-^^^^^^^
+-------
 In order to install SAR Calibration Tool follow these steps:
 
-1. Clone the SAR Calibration Tool ``git`` repository in a folder of your local hard drive and move inside it
+Clone the SAR Calibration Tool ``git`` repository in a folder of your local hard drive and move inside it
 
-2. In a conda command window, type the following instruction, which creates the proper environment:
-	
-.. code-block:: bash
-
-    $ conda env create --file environment.yml
-
-3. In the same conda command window, type the following instruction, which activates the created environment:
+Create a conda environment with python 3.8, then activate the environment
 
 .. code-block:: bash
+    $ conda create -n sct_env python=3.8
+    $ activate sct_env
 
-    $ conda activate sct_env
+Install the package via pip install 
 
-4. | Install the SAR Calibration Tool package using ``pip`` tool:
-   | (note: use the ``-e`` option to install it in ``edit`` mode)
+Install the coda package (see https://github.com/conda-forge/coda-feedstock)
+
+Compile the external tool solid by going to the sct/external of your SCT installation and running
 
 .. code-block:: bash
 
-    $ pip install .
-    <or>
-    $ pip install -e .
+    $ f2py -c build_solid/solid__for_sct.for -m solid
 
-For more details about SCT installation process refer to documentation.
+N.B. You may have to first run (see https://github.com/numpy/numpy/issues/22572)
+
+.. code-block:: bash
+
+    $ export CFLAGS=-std=c99
 
 
 Contents
