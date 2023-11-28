@@ -114,7 +114,7 @@ class IRFAnalyser:  # TODO Improve IRFAnalyser class
         data_portion_size = data_portion.shape
         data_portion_half_size = [x // 2 for x in data_portion_size]
         data_portion_size_ratio = data_portion_size[1] / data_portion_size[0]
-        irf_roi = [32 * x for x in [1, np.int(np.rint(data_portion_size_ratio))]]
+        irf_roi = [32 * x for x in [1, int(np.rint(data_portion_size_ratio))]]
         irf_ovrs = 16
         irf_roi__center__int = [x // 2 * irf_ovrs for x in irf_roi]
         mask_method = "PEAK"  # PEAK, RES
@@ -279,7 +279,7 @@ class IRFAnalyser:  # TODO Improve IRFAnalyser class
             data_type = "COMPLEX"
         data_portion_size = data_portion.shape
         data_portion_size_ratio = data_portion_size[1] / data_portion_size[0]
-        roi_size = [128 * x for x in [1, np.int(np.rint(data_portion_size_ratio))]]
+        roi_size = [128 * x for x in [1, int(np.rint(data_portion_size_ratio))]]
         interp_factor = 8
         m = 10
         mm = 20

@@ -6,45 +6,45 @@ Requirements
 ------------
 The packages required by SAR Calibration Tool are specified in the file ``environment.yml`` included in its distribution.
 
-Minimum requirements:
+Requirements:
 
-* python 3.5 or higher
-* numpy 1.17 or higher
+* python 3.8
 
 
 Install
 -------
 In order to install SAR Calibration Tool follow these steps:
 
-1. Clone the SAR Calibration Tool ``git`` repository in a folder of your local hard drive and move inside it
+Clone the SAR Calibration Tool ``git`` repository in a folder of your local hard drive and move inside it
 
-2. In a conda command window, type the following instruction, which creates the proper environment:
-	
-.. code-block:: bash
-
-    $ conda env create --file environment.yml
-
-3. In the same conda command window, type the following instruction, which activates the created environment:
+Create a conda environment with python 3.8, then activate the environment
 
 .. code-block:: bash
+    $ conda create -n sct_env python=3.8
+    $ activate sct_env
 
-    $ conda activate sct_env
+Install the package via pip install 
 
-4. | Install the SAR Calibration Tool package using ``pip`` tool:
-   | (note: use the ``-e`` option to install it in ``edit`` mode)
+Install the coda package (see https://github.com/conda-forge/coda-feedstock)
+
+Compile the external tool solid by going to the sct/external of your SCT installation and running
 
 .. code-block:: bash
 
-    $ pip install .
-    <or>
-    $ pip install -e .
+    $ f2py -c build_solid/solid__for_sct.for -m solid
+
+N.B. You may have to first run (see https://github.com/numpy/numpy/issues/22572)
+
+.. code-block:: bash
+
+    $ export CFLAGS=-std=c99
 
 
 Additional installation steps
 -----------------------------
-In order to execute the Jupyter Notebook included in SAR Calibration Tool distribution, some additional packages shall be installed in the ``sct_env`` environment.
+In order to execute the Jupyter Notebook included in SAR Calibration Tool distribution, some additional packages shall be installed in the SCT environment.
 
-In a conda command window, activate the ``sct_env`` environment and type the following instructions:
+In a conda command window, activate the SCT environment and type the following instructions:
 
 .. code-block:: bash
 
@@ -71,9 +71,9 @@ SAR Calibration Tool makes use of an external tool called `solid <https://geodes
 
 This tool, originally developed in Fortran language, has been compiled to be imported in Python as a standard package and two libraries have been included in the distribution, one for Windows and one for Linux OS.
 
-Such libraries are supposed to work in the ``sct_env`` environment.
+Such libraries are supposed to work in the SCT environment.
 
-In case of issues it is suggested to recompile directly the Fortran source code (``solid__for_sct.for`` file included as well in the distribution) on the local machine. In order to do this, in a conda command window, activate the ``sct_env`` environment and type the following instructions:
+In case of issues it is suggested to recompile directly the Fortran source code (``solid__for_sct.for`` file included as well in the distribution) on the local machine. In order to do this, in a conda command window, activate the SCT environment and type the following instructions:
 
 .. code-block:: bash
 
